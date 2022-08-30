@@ -38,6 +38,8 @@ public:
 
     static void shutdown();
 
+    static bool isInitialised();
+
     static Renderer* createRenderer(TargetWindow*);
 
 };

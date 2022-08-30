@@ -59,3 +59,7 @@ void dino::EngineContext::shutdown() {
     s_renderers.clear();
     SDL_Quit();
 }
+
+bool dino::EngineContext::isInitialised() {
+    return s_isInitialised;
+}
