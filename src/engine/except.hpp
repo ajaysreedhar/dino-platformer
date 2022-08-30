@@ -25,12 +25,17 @@
 
 namespace dino {
 
-class EngineError : std::runtime_error {
+class EngineError : public std::runtime_error {
 
 private:
     int m_code = 0;
 
 public:
+    enum ErrorKind: int {
+        E_TYPE_GENERAL = 311,
+        E_TYPE_SDL_RESULT,
+    };
+
     EngineError(const char* message, int code) : std::runtime_error(message) {
         m_code = code;
     }
