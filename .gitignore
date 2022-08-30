@@ -1,0 +1,15 @@
+# IDEs and editors
+.idea/
+.vscode/
+
+# Compiled output directories
+dist/
+out/
+
+# CMake build files
+cmake-build-debug/
+
+# Logs and backup files
+*.log
+*.old
+*.bak
