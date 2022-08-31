@@ -19,4 +19,74 @@
  * ========================================================================
  */
 
+#include <vector>
+#include <SDL2/SDL_image.h>
+#include "assert.hpp"
 #include "sprite_material.hpp"
+
+dino::SpriteMaterial::SpriteMaterial(SDL_Renderer* renderer, SDL_Surface* surface) {
+    m_texture = SDL_CreateTextureFromSurface(renderer, surface);
+    DINO_ASSERT_SDL_RESULT(m_texture, dino::EngineError::E_TYPE_SDL_RESULT)
+
+    SDL_QueryTexture(m_texture, nullptr, nullptr, &(m_properties.w), &(m_properties.h));
+
+    m_attachment.w = m_properties.w;
+    m_attachment.h = m_properties.h;
+}
+
+dino::SpriteMaterial::SpriteMaterial(SDL_Texture* texture, const SDL_Rect& properties, const SDL_Rect& attachment) {
+    m_texture = texture;
+    m_properties.w = properties.w;
+    m_properties.h = properties.h;
+    m_properties.x = properties.x;
+    m_properties.y = properties.y;
+    m_attachment.w = attachment.w;
+    m_attachment.h = attachment.h;
+    m_attachment.x = attachment.x;
+    m_attachment.y = attachment.y;
+}
+
+dino::SpriteMaterial *dino::SpriteMaterial::loadImage(SDL_Renderer *renderer, const std::string& file_path) {
+    SDL_Surface* surface = IMG_Load(file_path.c_str());
+    DINO_ASSERT_SDL_RESULT(surface, dino::EngineError::E_TYPE_SDL_RESULT)
+
+    auto material = new dino::SpriteMaterial(renderer, surface);
+
+    SDL_FreeSurface(surface);
+    return material;
+}
+
+dino::SpriteMaterial::~SpriteMaterial() {
+    if (m_texture != nullptr) {
+        SDL_DestroyTexture(m_texture);
+    }
+}
+
+dino::SpriteMaterial* dino::SpriteMaterial::clone() {
+    return new SpriteMaterial(m_texture, m_properties, m_attachment);
+}
+
+SDL_Texture *dino::SpriteMaterial::getTexture() {
+    return m_texture;
+}
+
+void dino::SpriteMaterial::setAttachment(int pos_x, int pos_y) {
+    m_attachment.x = pos_x;
+    m_attachment.y = pos_y;
+}
+
+SDL_Rect dino::SpriteMaterial::getProperties() const {
+    return m_properties;
+}
+
+SDL_Rect dino::SpriteMaterial::getAttachment() const {
+    return m_attachment;
+}
+
+int dino::SpriteMaterial::getWidth() const {
+    return m_properties.w;
+}
+
+int dino::SpriteMaterial::getHeight() const {
+    return m_properties.h;
+}
