@@ -1,5 +1,5 @@
 /**
- * except.hpp - Throwable Dino Engine exception
+ * except.hpp - Throwable Dino engine exception
  * ------------------------------------------------------------------------
  *
  * Copyright (c) 2022-present Ajay Sreedhar
@@ -25,6 +25,12 @@
 
 namespace dino {
 
+/**
+ * @brief Defines a throwable error for the engine module.
+ *
+ * All sub-modules in the engine module must throw an
+ * instance of this class if an exception occurs.
+ */
 class EngineError : public std::runtime_error {
 
 private:
@@ -36,10 +42,19 @@ public:
         E_TYPE_SDL_RESULT,
     };
 
+    /**
+     * @brief Sets the error message and code.
+     * @param message Error message.
+     * @param code Custom error code.
+     */
     EngineError(const char* message, int code) : std::runtime_error(message) {
         m_code = code;
     }
 
+    /**
+     * @brief Returns the error code.
+     * @return Error code.
+     */
     int getCode () {
         return m_code;
     }
