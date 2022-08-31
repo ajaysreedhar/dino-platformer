@@ -21,6 +21,8 @@
 
 #include "logger.hpp"
 
+bool dino::Logger::m_verbose = true;
+
 void dino::Logger::verboseOn() {
     m_verbose = true;
 }
