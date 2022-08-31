@@ -1,5 +1,5 @@
 /**
- * engine_context.hpp - Global Dino Engine context
+ * audio_mixer.hpp - Audio manager
  * ------------------------------------------------------------------------
  *
  * Copyright (c) 2022-present Ajay Sreedhar
@@ -20,45 +20,3 @@
  */
 
 #pragma once
-
-#include <vector>
-#include "renderer.hpp"
-
-namespace dino {
-
-struct context_event {
-    int kind = 404;
-
-    enum EventKind: int {
-        UNKNOWN = 404,
-        PROCESS_QUIT = 500,
-        WINDOW_CLOSE,
-        KEY_PRESS_UP,
-        KEY_PRESS_RIGHT,
-        KEY_PRESS_Q,
-    };
-};
-
-class EngineContext {
-
-private:
-    static bool s_isInitialised;
-
-    static std::vector<Renderer*> s_renderers;
-
-public:
-    typedef struct context_event Event;
-
-    static void initialise();
-
-    static void shutdown();
-
-    static Renderer* createRenderer(TargetWindow*);
-
-    static EngineContext::Event pollEvent();
-
-    static bool isInitialised();
-
-};
-
-} // namespace dino
