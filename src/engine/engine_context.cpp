@@ -20,6 +20,7 @@
  */
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include "assert.hpp"
 #include "except.hpp"
 #include "engine_context.hpp"
@@ -38,6 +39,10 @@ void dino::EngineContext::initialise() {
 
     int result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     DINO_ASSERT_SDL_RESULT(result)
+
+    result = Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+    DINO_ASSERT_SDL_RESULT(result)
+
     s_isInitialised = true;
 }
 
@@ -53,7 +58,14 @@ void dino::EngineContext::shutdown() {
         delete renderer;
     }
 
+    for (auto mixer : s_mixers){
+        delete mixer;
+    }
+
     s_renderers.clear();
+    s_mixers.clear();
+
+    Mix_Quit();
     SDL_Quit();
 }
 
@@ -66,6 +78,17 @@ dino::Renderer* dino::EngineContext::createRenderer(dino::TargetWindow* target) 
     s_renderers.push_back(renderer);
 
     return renderer;
+}
+
+dino::AudioMixer* dino::EngineContext::createMixer() {
+    if (!s_isInitialised) {
+        throw dino::EngineError("Engine context must be initialised first.", dino::EngineError::E_TYPE_GENERAL);
+    }
+
+    auto mixer = new AudioMixer();
+    s_mixers.push_back(mixer);
+
+    return mixer;
 }
 
 dino::EngineContext::Event dino::EngineContext::pollEvent() {

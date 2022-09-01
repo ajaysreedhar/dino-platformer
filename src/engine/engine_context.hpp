@@ -23,6 +23,7 @@
 
 #include <vector>
 #include "renderer.hpp"
+#include "audio_mixer.hpp"
 
 namespace dino {
 
@@ -59,6 +60,11 @@ private: /* ===-=== Private Members ===-=== */
      */
     static std::vector<Renderer*> s_renderers;
 
+    /**
+     * @brief Holds a reference to all the mixers created.
+     */
+    static std::vector<AudioMixer*> s_mixers;
+
 public: /* ===-=== Public Members ===-=== */
     typedef struct context_event Event;
 
@@ -83,6 +89,13 @@ public: /* ===-=== Public Members ===-=== */
      * a renderer to be created.
      */
     static Renderer* createRenderer(TargetWindow*);
+
+    /**
+     * @brief Creates an audio mixer.
+     * @return New audio mixer.
+     * @throw dino::EngineError Thrown if mixer can not be created.
+     */
+    static AudioMixer* createMixer();
 
     /**
      * @brief Polls events from the global context.
