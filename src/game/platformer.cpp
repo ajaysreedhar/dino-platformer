@@ -57,7 +57,7 @@ dino::Platformer::Platformer() : m_lastObstacle(0) {
 }
 
 void dino::Platformer::createWorld() {
-    auto base_tile = m_renderer->loadSprite("texture/base-tile-001.png");
+    auto base_tile = m_renderer->loadSprite("texture/base-tile-01.png");
 
     int next_x = 0;
     int next_y = m_window->height - base_tile->getHeight();
