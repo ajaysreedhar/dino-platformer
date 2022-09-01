@@ -40,6 +40,7 @@ struct context_event {
         KEY_PRESS_UP,
         KEY_PRESS_RIGHT,
         KEY_PRESS_Q,
+        KEY_PRESS_R
     };
 };
 
