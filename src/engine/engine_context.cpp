@@ -20,7 +20,6 @@
  */
 
 #include <SDL2/SDL.h>
-#include "platform/standard.hpp"
 #include "assert.hpp"
 #include "except.hpp"
 #include "engine_context.hpp"
