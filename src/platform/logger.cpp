@@ -1,5 +1,5 @@
 /**
- * logger.hpp - Custom logging utility definition
+ * logger.cpp - Custom logging utility definition
  * ------------------------------------------------------------------------
  *
  * Copyright (c) 2022-present Ajay Sreedhar
