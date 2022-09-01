@@ -111,13 +111,19 @@ public: /* ===-=== Public Members ===-=== */
      * @brief Returns the SDL texture.
      * @return SDL texture.
      */
-    SDL_Texture* getTexture();
+    [[nodiscard]] const SDL_Texture* getTexture() const;
 
     /**
      * @brief Returns the texture properties.
      * @return The texture property structure.
      */
-    [[nodiscard]] SDL_Rect getProperties() const;
+    [[nodiscard]] const SDL_Rect* getProperties() const;
+
+    /**
+     * @brief Returns the attachment details.
+     * @return The attachment details.
+     */
+    [[nodiscard]] const SDL_Rect* getAttachment() const;
 
     /**
      * @brief Returns the texture width in pixels.

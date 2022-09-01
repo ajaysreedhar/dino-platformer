@@ -80,7 +80,7 @@ dino::SpriteMaterial* dino::SpriteMaterial::clone() {
     return new SpriteMaterial(m_texture, m_properties, m_attachment);
 }
 
-SDL_Texture *dino::SpriteMaterial::getTexture() {
+const SDL_Texture *dino::SpriteMaterial::getTexture() const {
     return m_texture;
 }
 
@@ -89,8 +89,8 @@ void dino::SpriteMaterial::setAttachment(int pos_x, int pos_y) {
     m_attachment.y = pos_y;
 }
 
-SDL_Rect dino::SpriteMaterial::getProperties() const {
-    return m_properties;
+const SDL_Rect* dino::SpriteMaterial::getProperties() const {
+    return &m_properties;
 }
 
 int dino::SpriteMaterial::getWidth() const {
@@ -107,4 +107,8 @@ int dino::SpriteMaterial::getPositionX() const {
 
 int dino::SpriteMaterial::getPositionY() const {
     return m_attachment.y;
+}
+
+const SDL_Rect* dino::SpriteMaterial::getAttachment() const {
+    return &m_attachment;
 }
