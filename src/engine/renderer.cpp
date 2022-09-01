@@ -34,7 +34,7 @@ dino::Renderer::~Renderer() {
     SDL_DestroyRenderer(m_renderer);
 
 #if defined(DINO_MODE_DEBUG) && DINO_MODE_DEBUG == 1
-    dino::Logger::debug("Renderer destroyed.");
+    dino::Logger::debug("Renderer instance destroyed.");
 #endif
 }
 
@@ -54,18 +54,18 @@ void dino::Renderer::begin() {
 
 void dino::Renderer::draw(std::vector<dino::SpriteMaterial*>* materials) {
     for (auto sprite : *materials) {
-        auto properties = sprite->getProperties();
-        auto attachment = sprite->getAttachment();
+        auto const properties = sprite->getProperties();
+        auto const attachment = sprite->getAttachment();
 
-        auto result = SDL_RenderCopy(m_renderer, sprite->getTexture(), &properties, &attachment);
+        auto result = SDL_RenderCopy(m_renderer, sprite->getTexture(), properties, attachment);
         DINO_ASSERT_SDL_RESULT(result)
     }
 }
 
 void dino::Renderer::draw(dino::SpriteMaterial* material) {
-    auto properties = material->getProperties();
-    auto attachment = material->getAttachment();
-    SDL_RenderCopy(m_renderer, material->getTexture(), &properties, &attachment);
+    auto const properties = material->getProperties();
+    auto const attachment = material->getAttachment();
+    SDL_RenderCopy(m_renderer, material->getTexture(), properties, attachment);
 }
 
 void dino::Renderer::commit() {
