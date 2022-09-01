@@ -24,8 +24,14 @@
 #include <SDL2/SDL.h>
 #include "except.hpp"
 
-#define DINO_ASSERT_SDL_RESULT(result, code)    \
-if (result == nullptr) {                        \
+#define DINO_ASSERT_SDL_HANDLE(handle, code)    \
+if (handle == nullptr) {                        \
     auto message = SDL_GetError();              \
     throw dino::EngineError(message, code);     \
+}
+
+#define DINO_ASSERT_SDL_RESULT(result)          \
+if (result <= -1) {                             \
+    auto message = SDL_GetError();              \
+    throw dino::EngineError(message, result);   \
 }
