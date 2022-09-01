@@ -5,7 +5,7 @@ set(BASEPATH "${CMAKE_SOURCE_DIR}/src")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/dist")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/dist/lib")
 
-add_definitions(-DVTRS_MODE_DEBUG=1)
+add_definitions(-DDINO_MODE_DEBUG=1)
 
 add_library(dino-platform SHARED
         platform/standard.hpp
