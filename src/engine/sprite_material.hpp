@@ -41,6 +41,11 @@ private: /* ===-=== Private Members ===-=== */
     static unsigned int s_counter;
 
     /**
+     * @brief Set to true if the instance is cloned.
+     */
+    bool m_isCloned = false;
+
+    /**
      * @brief A handle to the SDL texture object which is wrapped.
      */
     SDL_Texture* m_texture;
