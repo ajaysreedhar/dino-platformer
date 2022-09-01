@@ -1,5 +1,5 @@
 /**
- * standard.hpp - Standard platform definition
+ * standard.hpp - Platform standard header
  * ------------------------------------------------------------------------
  *
  * Copyright (c) 2022 Ajay Sreedhar
