@@ -32,7 +32,7 @@ unsigned int dino::SpriteMaterial::s_counter = 0;
 
 dino::SpriteMaterial::SpriteMaterial(SDL_Renderer* renderer, SDL_Surface* surface) {
     m_texture = SDL_CreateTextureFromSurface(renderer, surface);
-    DINO_ASSERT_SDL_RESULT(m_texture, dino::EngineError::E_TYPE_SDL_RESULT)
+    DINO_ASSERT_SDL_HANDLE(m_texture, dino::EngineError::E_TYPE_SDL_RESULT)
 
     SDL_QueryTexture(m_texture, nullptr, nullptr, &(m_properties.w), &(m_properties.h));
 
@@ -56,7 +56,7 @@ dino::SpriteMaterial::SpriteMaterial(SDL_Texture* texture, const SDL_Rect& prope
 
 dino::SpriteMaterial *dino::SpriteMaterial::loadImage(SDL_Renderer *renderer, const std::string& file_path) {
     SDL_Surface* surface = IMG_Load(file_path.c_str());
-    DINO_ASSERT_SDL_RESULT(surface, dino::EngineError::E_TYPE_SDL_RESULT)
+    DINO_ASSERT_SDL_HANDLE(surface, dino::EngineError::E_TYPE_SDL_RESULT)
 
     auto material = new dino::SpriteMaterial(renderer, surface);
 
