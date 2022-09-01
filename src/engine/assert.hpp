@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <SDL2/SDL.h>
+#include <SDL2/SDL_error.h>
 #include "except.hpp"
 
 #define DINO_ASSERT_SDL_HANDLE(handle, code)    \
