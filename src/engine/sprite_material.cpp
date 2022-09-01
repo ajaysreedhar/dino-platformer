@@ -80,7 +80,7 @@ dino::SpriteMaterial* dino::SpriteMaterial::clone() {
     return new SpriteMaterial(m_texture, m_properties, m_attachment);
 }
 
-const SDL_Texture *dino::SpriteMaterial::getTexture() const {
+SDL_Texture *dino::SpriteMaterial::getTexture() const {
     return m_texture;
 }
 

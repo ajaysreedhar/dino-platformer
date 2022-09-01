@@ -111,7 +111,7 @@ public: /* ===-=== Public Members ===-=== */
      * @brief Returns the SDL texture.
      * @return SDL texture.
      */
-    [[nodiscard]] const SDL_Texture* getTexture() const;
+    [[nodiscard]] SDL_Texture* getTexture() const;
 
     /**
      * @brief Returns the texture properties.
