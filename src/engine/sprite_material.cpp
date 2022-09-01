@@ -93,14 +93,18 @@ SDL_Rect dino::SpriteMaterial::getProperties() const {
     return m_properties;
 }
 
-SDL_Rect dino::SpriteMaterial::getAttachment() const {
-    return m_attachment;
-}
-
 int dino::SpriteMaterial::getWidth() const {
     return m_properties.w;
 }
 
 int dino::SpriteMaterial::getHeight() const {
     return m_properties.h;
+}
+
+int dino::SpriteMaterial::getPositionX() const {
+    return m_attachment.x;
+}
+
+int dino::SpriteMaterial::getPositionY() const {
+    return m_attachment.y;
 }

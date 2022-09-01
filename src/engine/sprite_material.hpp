@@ -120,12 +120,6 @@ public: /* ===-=== Public Members ===-=== */
     [[nodiscard]] SDL_Rect getProperties() const;
 
     /**
-     * @brief Returns the screen attachment properties.
-     * @return The attachment property structure.
-     */
-    [[nodiscard]] SDL_Rect getAttachment() const;
-
-    /**
      * @brief Returns the texture width in pixels.
      * @return The texture width.
      */
@@ -136,6 +130,18 @@ public: /* ===-=== Public Members ===-=== */
      * @return The texture height.
      */
     [[nodiscard]] int getHeight() const;
+
+    /**
+     * @brief Returns the X axis value of attachment property.
+     * @return The X axis value in pixels.
+     */
+    [[nodiscard]] int getPositionX() const;
+
+    /**
+     * @brief Returns the Y axis value of attachment property.
+     * @return The Y axis value in pixels.
+     */
+    [[nodiscard]] int getPositionY() const;
 };
 
 } // namespace dino
