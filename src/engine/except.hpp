@@ -40,6 +40,7 @@ public:
     enum ErrorKind: int {
         E_TYPE_GENERAL = 311,
         E_TYPE_SDL_RESULT,
+        E_TYPE_MIX_RESULT
     };
 
     /**
