@@ -29,7 +29,7 @@ namespace dino {
 
 class Logger {
 
-private:
+private:/* ===-=== Private Members ===-=== */
     static bool m_verbose;
 
     template<typename T>
@@ -47,7 +47,7 @@ private:
         }
     }
 
-public:
+public: /* ===-=== Public Members ===-=== */
     enum LogLevel : int {
         FATAL = 0,
         ERROR,
