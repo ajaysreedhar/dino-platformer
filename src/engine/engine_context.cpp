@@ -20,20 +20,42 @@
  */
 
 #include <SDL2/SDL.h>
+#include "platform/standard.hpp"
+#include "assert.hpp"
 #include "except.hpp"
 #include "engine_context.hpp"
+
+#if defined(DINO_MODE_DEBUG) && DINO_MODE_DEBUG == 1
+#include "platform/logger.hpp"
+#endif
 
 bool dino::EngineContext::s_isInitialised = false;
 std::vector<dino::Renderer*> dino::EngineContext::s_renderers {};
 
 void dino::EngineContext::initialise() {
-    int code = SDL_Init(SDL_INIT_VIDEO);
-
-    if (code <= -1) {
-        throw dino::EngineError(SDL_GetError(), code);
+    if (isInitialised()) {
+        return void();
     }
 
+    int result = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
+    DINO_ASSERT_SDL_RESULT(result)
     s_isInitialised = true;
+}
+
+void dino::EngineContext::shutdown() {
+    if (!s_isInitialised) {
+#if defined(DINO_MODE_DEBUG) && DINO_MODE_DEBUG == 1
+        dino::Logger::debug("Attempting to shutdown engine context without initialising.");
+#endif
+        return void();
+    }
+
+    for (auto renderer : s_renderers){
+        delete renderer;
+    }
+
+    s_renderers.clear();
+    SDL_Quit();
 }
 
 dino::Renderer* dino::EngineContext::createRenderer(dino::TargetWindow* target) {
@@ -47,17 +69,37 @@ dino::Renderer* dino::EngineContext::createRenderer(dino::TargetWindow* target) 
     return renderer;
 }
 
-void dino::EngineContext::shutdown() {
-    if (!s_isInitialised) {
-        throw dino::EngineError("Engine context must be initialised first.", dino::EngineError::E_TYPE_GENERAL);
+dino::EngineContext::Event dino::EngineContext::pollEvent() {
+    SDL_Event sdl_event {};
+    dino::EngineContext::Event dino_event {dino::EngineContext::Event::UNKNOWN};
+
+    SDL_PollEvent(&sdl_event);
+
+    if (sdl_event.type == SDL_QUIT) {
+        dino_event.kind = dino::EngineContext::Event::PROCESS_QUIT;
+        return dino_event;
     }
 
-    for (auto renderer : s_renderers){
-        delete renderer;
+    if (sdl_event.type == SDL_KEYDOWN) {
+        switch (sdl_event.key.keysym.scancode) {
+            case SDL_SCANCODE_UP:
+                dino_event.kind = dino::EngineContext::Event::KEY_PRESS_UP;
+                return dino_event;
+
+            case SDL_SCANCODE_RIGHT:
+                dino_event.kind = dino::EngineContext::Event::KEY_PRESS_RIGHT;
+                return dino_event;
+
+            case SDL_SCANCODE_Q:
+                dino_event.kind = dino::EngineContext::Event::KEY_PRESS_Q;
+                return dino_event;
+
+            default:
+                break;
+        }
     }
 
-    s_renderers.clear();
-    SDL_Quit();
+    return dino_event;
 }
 
 bool dino::EngineContext::isInitialised() {
