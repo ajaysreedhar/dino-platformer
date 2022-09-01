@@ -52,6 +52,8 @@ dino::SpriteMaterial::SpriteMaterial(SDL_Texture* texture, const SDL_Rect& prope
     m_attachment.h = attachment.h;
     m_attachment.x = attachment.x;
     m_attachment.y = attachment.y;
+
+    m_isCloned = true;
 }
 
 dino::SpriteMaterial *dino::SpriteMaterial::loadImage(SDL_Renderer *renderer, const std::string& file_path) {
@@ -65,13 +67,13 @@ dino::SpriteMaterial *dino::SpriteMaterial::loadImage(SDL_Renderer *renderer, co
 }
 
 dino::SpriteMaterial::~SpriteMaterial() {
-    if (m_texture != nullptr) {
+    if (!m_isCloned && m_texture != nullptr) {
         SDL_DestroyTexture(m_texture);
         m_texture = nullptr;
         s_counter = s_counter - 1;
 
 #if defined(DINO_MODE_DEBUG) && DINO_MODE_DEBUG == 1
-        dino::Logger::debug("Sprite material", s_counter, "destroyed.");
+        dino::Logger::debug("Sprite material destroyed.", s_counter, "remaining.");
 #endif
     }
 }
