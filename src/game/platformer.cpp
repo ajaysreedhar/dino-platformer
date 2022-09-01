@@ -302,8 +302,6 @@ void dino::Platformer::movePlayer(int pos_x, int pos_y) {
         m_dinoPlayer->setAttachment(pos_x, next_y);
         radians = radians + 0.01f;
 
-        dino::Logger::print(radians, next_y);
-
         SDL_Delay(2);
     }
 
