@@ -24,6 +24,12 @@
 #include "assert.hpp"
 #include "sprite_material.hpp"
 
+#if defined(DINO_MODE_DEBUG) && DINO_MODE_DEBUG == 1
+#include "platform/logger.hpp"
+#endif
+
+unsigned int dino::SpriteMaterial::s_counter = 0;
+
 dino::SpriteMaterial::SpriteMaterial(SDL_Renderer* renderer, SDL_Surface* surface) {
     m_texture = SDL_CreateTextureFromSurface(renderer, surface);
     DINO_ASSERT_SDL_RESULT(m_texture, dino::EngineError::E_TYPE_SDL_RESULT)
@@ -32,6 +38,8 @@ dino::SpriteMaterial::SpriteMaterial(SDL_Renderer* renderer, SDL_Surface* surfac
 
     m_attachment.w = m_properties.w;
     m_attachment.h = m_properties.h;
+
+    s_counter = s_counter + 1;
 }
 
 dino::SpriteMaterial::SpriteMaterial(SDL_Texture* texture, const SDL_Rect& properties, const SDL_Rect& attachment) {
@@ -59,6 +67,12 @@ dino::SpriteMaterial *dino::SpriteMaterial::loadImage(SDL_Renderer *renderer, co
 dino::SpriteMaterial::~SpriteMaterial() {
     if (m_texture != nullptr) {
         SDL_DestroyTexture(m_texture);
+        m_texture = nullptr;
+        s_counter = s_counter - 1;
+
+#if defined(DINO_MODE_DEBUG) && DINO_MODE_DEBUG == 1
+        dino::Logger::debug("Sprite material", s_counter, "destroyed.");
+#endif
     }
 }
 

@@ -31,6 +31,15 @@ namespace dino {
 class SpriteMaterial {
 
 private: /* ===-=== Private Members ===-=== */
+
+    /**
+     * @brief Static member to hold the number of instances created.
+     *
+     * Increments when an instance is created and decrements when
+     * an instance is destroyed.
+     */
+    static unsigned int s_counter;
+
     /**
      * @brief A handle to the SDL texture object which is wrapped.
      */
