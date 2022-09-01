@@ -20,9 +20,30 @@
  */
 #include "system_clock.hpp"
 
+bool dino::SystemClock::s_isInitialised = false;
+
+void dino::SystemClock::initialise() {
+    dino::SystemClock::s_randomEngine = std::default_random_engine {unixTimestamp()};
+    dino::SystemClock::s_wideDist = std::uniform_int_distribution<unsigned int>(10000, 23000);
+    dino::SystemClock::s_narrowDist = std::uniform_int_distribution<unsigned int>(4000, 9000);
+
+    s_isInitialised = true;
+}
+
 unsigned int dino::SystemClock::unixTimestamp() {
     auto current_time = std::chrono::system_clock::now().time_since_epoch();
     auto timestamp = std::chrono::duration_cast<std::chrono::seconds>(current_time);
 
     return timestamp.count();
+}
+
+unsigned int dino::SystemClock::randomInteger() {
+    if (!s_isInitialised) {
+        initialise();
+    }
+
+    auto wide_int   = s_wideDist(s_randomEngine);
+    auto narrow_int = s_narrowDist(s_randomEngine);
+
+    return (wide_int - narrow_int);
 }

@@ -22,6 +22,7 @@
 #pragma once
 
 #include <chrono>
+#include <random>
 
 namespace dino {
 
@@ -30,12 +31,29 @@ namespace dino {
  */
 class SystemClock {
 
+private:
+    static bool s_isInitialised;
+    static std::default_random_engine s_randomEngine;
+    static std::uniform_int_distribution<unsigned int> s_wideDist;
+    static std::uniform_int_distribution<unsigned int> s_narrowDist;
+
 public:
+    /**
+     * @brief Initialises the random generator.
+     */
+    static void initialise();
+
     /**
      * Provides the current timestamp in seconds.
      * @return Timestamp in seconds.
      */
     static unsigned int unixTimestamp();
+
+    /**
+     * @brief Returns a random number based on the current timestamp seed.
+     * @return Random number.
+     */
+    static unsigned int randomInteger();
 };
 
 } // namespace dino
