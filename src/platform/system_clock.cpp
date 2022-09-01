@@ -22,11 +22,12 @@
 
 bool dino::SystemClock::s_isInitialised = false;
 
-void dino::SystemClock::initialise() {
-    dino::SystemClock::s_randomEngine = std::default_random_engine {unixTimestamp()};
-    dino::SystemClock::s_wideDist = std::uniform_int_distribution<unsigned int>(10000, 23000);
-    dino::SystemClock::s_narrowDist = std::uniform_int_distribution<unsigned int>(4000, 9000);
+std::default_random_engine dino::SystemClock::s_randomEngine{}; // NOLINT(cert-err51-cpp,cert-err58-cpp,cert-msc51-cpp)
+std::uniform_int_distribution<unsigned int> dino::SystemClock::s_wideDist   {10000, 23000}; // NOLINT(cert-err58-cpp)
+std::uniform_int_distribution<unsigned int> dino::SystemClock::s_narrowDist {4000, 9000};   // NOLINT(cert-err58-cpp)
 
+void dino::SystemClock::initialise() {
+    s_randomEngine.seed(unixTimestamp());
     s_isInitialised = true;
 }
 
