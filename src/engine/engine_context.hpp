@@ -26,6 +26,9 @@
 
 namespace dino {
 
+/**
+ * @brief Defines an event polled from the global context.
+ */
 struct context_event {
     int kind = 404;
 
@@ -39,26 +42,59 @@ struct context_event {
     };
 };
 
+/**
+ * @brief Represents the global game engine context.
+ */
 class EngineContext {
 
-private:
+private: /* ===-=== Private Members ===-=== */
+
+    /**
+     * @brief Determines if the context is initialised or not.
+     */
     static bool s_isInitialised;
 
+    /**
+     * @brief Holds a reference to all the renderers created.
+     */
     static std::vector<Renderer*> s_renderers;
 
-public:
+public: /* ===-=== Public Members ===-=== */
     typedef struct context_event Event;
 
+    /**
+     * @brief Initialises the engine context.
+     * @throw dino::EngineError Thrown if the engine fails to initialise.
+     */
     static void initialise();
 
+    /**
+     * @brief Destroys and cleans up the engine context.
+     */
     static void shutdown();
 
+    /**
+     * @brief Creates a renderer for a window.
+     * @return New renderer.
+     * @throw dino::EngineError Thrown if renderer can not be created.
+     *
+     * Only one renderer needs to be created for a window.
+     * If there are multiple windows, every window requires
+     * a renderer to be created.
+     */
     static Renderer* createRenderer(TargetWindow*);
 
+    /**
+     * @brief Polls events from the global context.
+     * @return The event details.
+     */
     static EngineContext::Event pollEvent();
 
+    /**
+     * @brief Checks if the context is already initialised or not.
+     * @return True if initialised, false otherwise.
+     */
     static bool isInitialised();
-
 };
 
 } // namespace dino
