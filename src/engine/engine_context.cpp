@@ -31,6 +31,7 @@
 
 bool dino::EngineContext::s_isInitialised = false;
 std::vector<dino::Renderer*> dino::EngineContext::s_renderers {};
+std::vector<dino::AudioMixer*> dino::EngineContext::s_mixers  {};
 
 void dino::EngineContext::initialise() {
     if (isInitialised()) {
