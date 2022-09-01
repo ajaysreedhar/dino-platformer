@@ -5,7 +5,12 @@ set(BASEPATH "${CMAKE_SOURCE_DIR}/src")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/dist")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/dist/lib")
 
-add_library(dino-platform SHARED platform/standard.hpp platform/logger.cpp platform/logger.hpp)
+add_definitions(-DVTRS_MODE_DEBUG=1)
+
+add_library(dino-platform SHARED
+        platform/standard.hpp
+        platform/system_clock.cpp   platform/system_clock.hpp
+        platform/logger.cpp         platform/logger.hpp)
 
 add_library(dino-engine SHARED
         engine/except.hpp
