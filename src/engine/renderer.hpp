@@ -56,10 +56,8 @@ struct target_window {
         this->width = width;
         this->height = height;
 
-        this->window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, this->width, this->height, SDL_WINDOW_VULKAN);
+        this->window = SDL_CreateWindow(title.c_str(), 0, 0, this->width, this->height, SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP);
         DINO_ASSERT_SDL_HANDLE(this->window, dino::EngineError::E_TYPE_SDL_RESULT)
-
-        SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN | SDL_WINDOW_FULLSCREEN_DESKTOP);
     }
 };
 
