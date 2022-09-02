@@ -84,7 +84,7 @@ void dino::Platformer::createWorld() {
 
     sprite_count = m_window->width / world_scene->getWidth();
     next_x = 0;
-    next_y = m_window->height - base_tile->getHeight() - world_scene->getWidth();
+    next_y = m_window->height - base_tile->getHeight() - world_scene->getHeight();
 
     world_scene->setAttachment(next_x, next_y);
     m_worldScene->push_back(world_scene);
