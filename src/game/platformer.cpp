@@ -52,7 +52,7 @@ dino::Platformer::Platformer() : m_lastObstacle(0) {
 
     m_dinoPlayer = m_renderer->loadSprite("texture/dino-player.png");
 
-    m_audioMixer->loadLoopAudio("audio/game-bgm-score.wav");
+    m_audioMixer->loadLoopAudio("audio/game-bgm-score.mp3");
     m_audioMixer->loadEffectAudio(0, "audio/cartoon-jump.wav");
 }
 
