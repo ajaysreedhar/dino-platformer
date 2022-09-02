@@ -15,6 +15,7 @@ add_library(dino-platform SHARED
 add_library(dino-engine SHARED
         engine/except.hpp
         engine/assert.hpp
+        engine/graphics_driver.cpp  engine/graphics_driver.hpp
         engine/sprite_material.cpp  engine/sprite_material.hpp
         engine/renderer.cpp         engine/renderer.hpp
         engine/audio_mixer.cpp      engine/audio_mixer.hpp
