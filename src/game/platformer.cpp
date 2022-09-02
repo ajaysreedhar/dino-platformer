@@ -29,6 +29,7 @@
 
 #include <cmath>
 #include "engine/except.hpp"
+#include "engine/graphics_driver.hpp"
 #include "engine/engine_context.hpp"
 #include "platformer.hpp"
 
@@ -41,7 +42,9 @@ dino::Platformer::Platformer() : m_lastObstacle(0) {
         throw std::runtime_error("Engine context is not initialised!");
     }
 
-    m_window     = new dino::TargetWindow("Crazy Dino", 1920, 1080);
+    auto capabilities = dino::GraphicsDriver::getDisplayCaps();
+
+    m_window     = new dino::TargetWindow("Crazy Dino", capabilities->screenWidth, capabilities->screenHeight);
     m_renderer   = dino::EngineContext::createRenderer(m_window);
     m_audioMixer = dino::EngineContext::createMixer();
 
@@ -295,10 +298,9 @@ int dino::Platformer::moveCamera() {
 
 void dino::Platformer::movePlayer(int pos_x, int pos_y) {
     float radians = 0;
-    int next_y    = 0;
 
     while (radians <= M_PIf) {
-        next_y = pos_y - static_cast<int>(450.0f * std::sin(radians));
+        int next_y = pos_y - static_cast<int>(450.0f * std::sin(radians));
         m_dinoPlayer->setAttachment(pos_x, next_y);
         radians = radians + 0.01f;
 
