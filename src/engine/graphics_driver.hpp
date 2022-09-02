@@ -39,8 +39,8 @@ struct display_caps {
     int displayIndex = -1;
     std::string displayName;
 
-    unsigned int screenWidth = 0;
-    unsigned int screenHeight = 0;
+    int screenWidth = 0;
+    int screenHeight = 0;
 };
 
 typedef struct display_caps DisplayCaps;
