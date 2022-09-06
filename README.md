@@ -1,11 +1,19 @@
 # Dino Platformer
 > Simple 2D platform game.
 
-This is a simple 2D platform game made with SDL.
+The classic Chrome Dinosaur Game done with SDL.
 
 ![Dino Screenshot](screenshot.png)
 
-### Resource Attributions
+### :package: Download and Compile
+
+Requirements:
+
+- C++ 17 or higher.
+- SDL2 with Image and Mixer libraries.
+- CMake v3.16 or higher
+
+### :raised_hands: Resource Attributions
 
 **Texture images**
 
