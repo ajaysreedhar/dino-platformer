@@ -115,7 +115,7 @@ void dino::Platformer::createWorld() {
             DINO_SPRITE_CLIP_WIDTH,
             m_dinoSprite->getHeight());
 
-    m_dinoSprite->setClip(0, 0, DINO_SPRITE_CLIP_WIDTH, m_dinoSprite->getHeight());
+    m_dinoSprite->setScissor(0, 0, DINO_SPRITE_CLIP_WIDTH, m_dinoSprite->getHeight());
 
     m_animateThread = new std::thread(&dino::Platformer::animateSprite, this);
     m_animateThread->detach();
@@ -362,11 +362,11 @@ void dino::Platformer::animateSprite() {
     while (this->m_isRunning) {
         int clip_x = m_isGameOver ?
                 DINO_SPRITE_CLIP_WIDTH * 6 :
-                m_dinoSprite->getClipX() + DINO_SPRITE_CLIP_WIDTH;
+                     m_dinoSprite->getScissorX() + DINO_SPRITE_CLIP_WIDTH;
 
         clip_x = (!m_isGameOver && clip_x >= DINO_SPRITE_CLIP_WIDTH * 6) ? 0 : clip_x;
 
-        m_dinoSprite->setClip(clip_x, 0);
+        m_dinoSprite->setScissor(clip_x, 0);
         SDL_Delay(70);
     }
 

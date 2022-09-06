@@ -42,20 +42,20 @@ dino::SpriteMaterial::SpriteMaterial(SDL_Renderer* renderer, SDL_Surface* surfac
     m_texture = SDL_CreateTextureFromSurface(renderer, surface);
     DINO_ASSERT_SDL_HANDLE(m_texture, dino::EngineError::E_TYPE_SDL_RESULT)
 
-    SDL_QueryTexture(m_texture, nullptr, nullptr, &(m_properties.w), &(m_properties.h));
+    SDL_QueryTexture(m_texture, nullptr, nullptr, &(m_scissor.w), &(m_scissor.h));
 
-    m_attachment.w = m_properties.w;
-    m_attachment.h = m_properties.h;
+    m_attachment.w = m_scissor.w;
+    m_attachment.h = m_scissor.h;
 
     s_counter = s_counter + 1;
 }
 
 dino::SpriteMaterial::SpriteMaterial(SDL_Texture* texture, const SDL_Rect& properties, const SDL_Rect& attachment) {
     m_texture = texture;
-    m_properties.w = properties.w;
-    m_properties.h = properties.h;
-    m_properties.x = properties.x;
-    m_properties.y = properties.y;
+    m_scissor.w = properties.w;
+    m_scissor.h = properties.h;
+    m_scissor.x = properties.x;
+    m_scissor.y = properties.y;
     m_attachment.w = attachment.w;
     m_attachment.h = attachment.h;
     m_attachment.x = attachment.x;
@@ -87,11 +87,18 @@ dino::SpriteMaterial::~SpriteMaterial() {
 }
 
 dino::SpriteMaterial* dino::SpriteMaterial::clone() {
-    return new SpriteMaterial(m_texture, m_properties, m_attachment);
+    return new SpriteMaterial(m_texture, m_scissor, m_attachment);
 }
 
 SDL_Texture *dino::SpriteMaterial::getTexture() const {
     return m_texture;
+}
+
+void dino::SpriteMaterial::setAttachment(int pos_x, int pos_y, int width, int height) {
+    m_attachment.x = pos_x;
+    m_attachment.y = pos_y;
+    m_attachment.w = width;
+    m_attachment.h = height;
 }
 
 void dino::SpriteMaterial::setAttachment(int pos_x, int pos_y) {
@@ -99,16 +106,28 @@ void dino::SpriteMaterial::setAttachment(int pos_x, int pos_y) {
     m_attachment.y = pos_y;
 }
 
+void dino::SpriteMaterial::setScissor(int pos_x, int pos_y, int width, int height) {
+    m_scissor.x = pos_x;
+    m_scissor.y = pos_y;
+    m_scissor.w = width;
+    m_scissor.h = height;
+}
+
+void dino::SpriteMaterial::setScissor(int pos_x, int pox_y) {
+    m_scissor.x = pos_x;
+    m_scissor.y = pox_y;
+}
+
 const SDL_Rect* dino::SpriteMaterial::getProperties() const {
-    return &m_properties;
+    return &m_scissor;
 }
 
 int dino::SpriteMaterial::getWidth() const {
-    return m_properties.w;
+    return m_scissor.w;
 }
 
 int dino::SpriteMaterial::getHeight() const {
-    return m_properties.h;
+    return m_scissor.h;
 }
 
 int dino::SpriteMaterial::getPositionX() const {
@@ -121,4 +140,12 @@ int dino::SpriteMaterial::getPositionY() const {
 
 const SDL_Rect* dino::SpriteMaterial::getAttachment() const {
     return &m_attachment;
+}
+
+int dino::SpriteMaterial::getScissorX() const {
+    return m_scissor.x;
+}
+
+int dino::SpriteMaterial::getScissorY() const {
+    return m_scissor.y;
 }

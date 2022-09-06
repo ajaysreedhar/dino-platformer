@@ -60,9 +60,15 @@ private: /* ===-=== Private Members ===-=== */
     SDL_Texture* m_texture;
 
     /**
-     * @brief The properties of the SDL texture.
+     * @brief The scissor properties of the SDL texture.
+     *
+     * The scissor property determines what portion od the image
+     * will be rendered on the screen.
+     * When a sprite material is initialised, the X and Y values
+     * are set to 0 and W and H are same as that of the source
+     * image read from the disk.
      */
-    SDL_Rect m_properties {0, 0, 0, 0};
+    SDL_Rect m_scissor {0, 0, 0, 0};
 
     /**
      * @brief Determines how the texture should be rendered on the screen.
@@ -115,11 +121,36 @@ public: /* ===-=== Public Members ===-=== */
     SpriteMaterial* clone();
 
     /**
-     * @brief Sets the X and Y coordinates in pixels.
+     * @brief Sets the X and Y attachment coordinates in pixels.
+     * @param pos_x The X coordinate in pixels.
+     * @param pos_y The Y coordinate in pixels.
+     * @param width The attachment length from X position.
+     * @param height The attachment length from Y position.
+     */
+    void setAttachment(int, int, int, int);
+
+    /**
+     * @brief Sets the X and Y attachment coordinates in pixels.
      * @param pos_x The X coordinate in pixels.
      * @param pos_y The Y coordinate in pixels.
      */
     void setAttachment(int, int);
+
+    /**
+     * @brief Sets the full scissor coordinates in pixels
+     * @param pos_x The X coordinate in pixels.
+     * @param pos_y The y coordinate in pixels.
+     * @param width The clip length from X position.
+     * @param height The clip length from Y position.
+     */
+    void setScissor(int, int, int, int);
+
+    /**
+     * @brief Sets the X and Y clip coordinates in pixels.
+     * @param pos_x The X coordinate in pixels.
+     * @param pox_y The Y coordinate in pixels.
+     */
+    void setScissor(int pos_x, int pox_y);
 
     /**
      * @brief Returns the SDL texture.
@@ -162,6 +193,18 @@ public: /* ===-=== Public Members ===-=== */
      * @return The Y axis value in pixels.
      */
     [[nodiscard]] int getPositionY() const;
+
+    /**
+     * @brief Returns the X axis value of scissor rectangle.
+     * @return The X axis value in pixels.
+     */
+    [[nodiscard]] int getScissorX() const;
+
+    /**
+     * @brief Returns the Y axis value of scissor rectangle.
+     * @return The Y axis value in pixels.
+     */
+    [[nodiscard]] int getScissorY() const;
 };
 
 } // namespace dino
