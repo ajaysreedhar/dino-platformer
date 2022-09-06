@@ -28,6 +28,7 @@
  */
 
 #include <cmath>
+#include "platform/filesystem.hpp"
 #include "engine/except.hpp"
 #include "engine/graphics_driver.hpp"
 #include "engine/engine_context.hpp"
@@ -53,14 +54,14 @@ dino::Platformer::Platformer() : m_lastObstacle(0) {
     m_obstacles  = new std::vector<dino::SpriteMaterial*>();
     m_residual   = new std::queue<dino::SpriteMaterial*>();
 
-    m_dinoPlayer = m_renderer->loadSprite("texture/dino-player.png");
+    m_dinoSprite = m_renderer->loadSprite(dino::Filesystem::resource("texture", "dino-sprite-map.png"));
 
-    m_audioMixer->loadLoopAudio("audio/game-bgm-score.mp3");
-    m_audioMixer->loadEffectAudio(0, "audio/cartoon-jump.wav");
+    m_audioMixer->loadLoopAudio(dino::Filesystem::resource("audio", "game-bgm-score.mp3"));
+    m_audioMixer->loadEffectAudio(0, dino::Filesystem::resource("audio", "cartoon-jump.wav"));
 }
 
 void dino::Platformer::createWorld() {
-    auto base_tile = m_renderer->loadSprite("texture/base-tile-01.png");
+    auto base_tile = m_renderer->loadSprite(dino::Filesystem::resource("texture", "base-tile-01.png"));
 
     int next_x = 0;
     int next_y = m_window->height - base_tile->getHeight();
@@ -80,7 +81,7 @@ void dino::Platformer::createWorld() {
         sprite_count--;
     }
 
-    auto world_scene =  m_renderer->loadSprite("texture/world-bg.png");
+    auto world_scene =  m_renderer->loadSprite(dino::Filesystem::resource("texture", "world-bg.png"));
 
     sprite_count = m_window->width / world_scene->getWidth();
     next_x = 0;
@@ -99,7 +100,7 @@ void dino::Platformer::createWorld() {
         sprite_count--;
     }
 
-    auto obstacle = m_renderer->loadSprite("texture/obstacle-type-01.png");
+    auto obstacle = m_renderer->loadSprite(dino::Filesystem::resource("texture", "obstacle-type-01.png"));
     obstacle->setAttachment(m_window->width, m_window->height - base_tile->getHeight() - obstacle->getHeight());
     m_obstacles->push_back(obstacle);
 
@@ -109,14 +110,22 @@ void dino::Platformer::createWorld() {
         m_obstacles->push_back(obstacle->clone());
     }
 
-    m_dinoPlayer->setAttachment(100, m_window->height - base_tile->getHeight() - m_dinoPlayer->getHeight());
+    m_dinoSprite->setAttachment(100,
+            m_window->height - base_tile->getHeight() - m_dinoSprite->getHeight(),
+            DINO_SPRITE_CLIP_WIDTH,
+            m_dinoSprite->getHeight());
+
+    m_dinoSprite->setClip(0, 0, DINO_SPRITE_CLIP_WIDTH, m_dinoSprite->getHeight());
+
+    m_animateThread = new std::thread(&dino::Platformer::animateSprite, this);
+    m_animateThread->detach();
 }
 
 void dino::Platformer::reloadWorld() {
     int next_x = 0;
     int next_y = m_window->height - m_baseTiles->at(0)->getHeight();
 
-    m_dinoPlayer->setAttachment(100, next_y - m_dinoPlayer->getHeight());
+    m_dinoSprite->setAttachment(100, next_y - m_dinoSprite->getHeight());
 
     /* Re-position base tiles. */
     for (auto sprite : *m_baseTiles){
@@ -158,11 +167,11 @@ void dino::Platformer::run() {
                 break;
 
             case dino::EngineContext::Event::KEY_PRESS_UP:
-                if (m_positionMutex.try_lock()) {
+                if (!m_isGameOver && m_positionMutex.try_lock()) {
                     delete m_positionThread;
 
-                    int pos_x = m_dinoPlayer->getPositionX();
-                    int pos_y = m_window->height - m_baseTiles->at(0)->getHeight() - m_dinoPlayer->getHeight();
+                    int pos_x = m_dinoSprite->getPositionX();
+                    int pos_y = m_window->height - m_baseTiles->at(0)->getHeight() - m_dinoSprite->getHeight();
 
                     m_positionThread = new std::thread(&dino::Platformer::movePlayer, this, pos_x, pos_y);
                     m_positionThread->detach();
@@ -186,7 +195,7 @@ void dino::Platformer::run() {
         m_renderer->draw(m_worldScene);
         m_renderer->draw(m_baseTiles);
         m_renderer->draw(m_obstacles);
-        m_renderer->draw(m_dinoPlayer);
+        m_renderer->draw(m_dinoSprite);
 
         m_renderer->commit();
     }
@@ -217,7 +226,7 @@ dino::Platformer::~Platformer() {
 #if defined(DINO_MODE_DEBUG) && DINO_MODE_DEBUG == 1
     dino::Logger::debug("Cleaning up player sprite.");
 #endif
-    delete m_dinoPlayer;
+    delete m_dinoSprite;
 
     SDL_DestroyWindow(m_window->window);
 
@@ -231,6 +240,7 @@ dino::Platformer::~Platformer() {
     delete m_obstacles;
 
     delete m_residual;
+    delete m_animateThread;
 }
 
 int dino::Platformer::moveCamera() {
@@ -282,10 +292,10 @@ int dino::Platformer::moveCamera() {
         }
 
         /* Collision detection. */
-        player_distance  = pos_x - m_dinoPlayer->getPositionX();
-        player_elevation = m_dinoPlayer->getPositionY() + (m_dinoPlayer->getHeight() - 100);
+        player_distance  = pos_x - m_dinoSprite->getPositionX();
+        player_elevation = m_dinoSprite->getPositionY() + (m_dinoSprite->getHeight() - 100);
 
-        if (player_distance > 0 && player_distance < m_dinoPlayer->getWidth() && player_elevation > sprite->getPositionY()) {
+        if (player_distance > 0 && player_distance < DINO_SPRITE_CLIP_WIDTH && player_elevation > sprite->getPositionY()) {
             m_isGameOver = true;
             m_audioMixer->pauseLoopAudio();
         }
@@ -297,11 +307,16 @@ int dino::Platformer::moveCamera() {
 }
 
 void dino::Platformer::movePlayer(int pos_x, int pos_y) {
+    if (m_isGameOver) {
+        m_positionMutex.unlock();
+        return void();
+    }
+
     float radians = 0;
 
     while (radians <= M_PIf) {
         int next_y = pos_y - static_cast<int>(450.0f * std::sin(radians));
-        m_dinoPlayer->setAttachment(pos_x, next_y);
+        m_dinoSprite->setAttachment(pos_x, next_y);
         radians = radians + 0.01f;
 
         SDL_Delay(2);
@@ -341,4 +356,19 @@ bool dino::Platformer::placeObstacles() {
     }
 
     return true;
+}
+
+void dino::Platformer::animateSprite() {
+    while (this->m_isRunning) {
+        int clip_x = m_isGameOver ?
+                DINO_SPRITE_CLIP_WIDTH * 6 :
+                m_dinoSprite->getClipX() + DINO_SPRITE_CLIP_WIDTH;
+
+        clip_x = (!m_isGameOver && clip_x >= DINO_SPRITE_CLIP_WIDTH * 6) ? 0 : clip_x;
+
+        m_dinoSprite->setClip(clip_x, 0);
+        SDL_Delay(70);
+    }
+
+    return void();
 }

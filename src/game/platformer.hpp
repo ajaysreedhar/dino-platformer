@@ -39,6 +39,7 @@
 
 #define DINO_FLOOR_SCROLL_VELOCITY 5
 #define DINO_WORLD_SCROLL_VELOCITY 1
+#define DINO_SPRITE_CLIP_WIDTH 262
 
 namespace dino {
 
@@ -49,8 +50,8 @@ class Platformer {
 
 private:
     std::mutex m_positionMutex {};
-
     std::thread* m_positionThread = nullptr;
+    std::thread* m_animateThread  = nullptr;
 
     /**
      * @brief Determines if the main loop is still running.
@@ -72,7 +73,8 @@ private:
     TargetWindow*   m_window;
     Renderer*       m_renderer;
     AudioMixer*     m_audioMixer;
-    SpriteMaterial* m_dinoPlayer;
+
+    SpriteMaterial* m_dinoSprite;
 
     std::vector<SpriteMaterial*>* m_baseTiles;
     std::vector<SpriteMaterial*>* m_worldScene;
@@ -127,6 +129,11 @@ public:
      * @param pos_y Initial player position on Y axis.
      */
     void movePlayer(int, int);
+
+    /**
+     * @brief Applies Run animation to the dino sprite.
+     */
+    void animateSprite();
 
     /**
      * @brief Randomly places the obstacles on the platform.
