@@ -1,11 +1,15 @@
 # Dino Platformer
 > Simple 2D platform game.
 
+This is a simple 2D platform game made with SDL.
+
+![Dino Screenshot](screenshot.png)
+
 ### Resource Attributions
 
 **Texture images**
 
-[VectorStock](https://www.vectorstock.com/royalty-free-vector/cute-cartoon-dinosaur-vector-22874160)
+[PNG Item](https://www.pngitem.com/middle/TxTwxwJ_dino-sprite-sheet-png-download-transparent-png/)
 
 [Two PNG from pngtree.com](https://pngtree.com/so/Two)
 
