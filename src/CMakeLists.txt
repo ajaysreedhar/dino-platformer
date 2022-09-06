@@ -9,6 +9,7 @@ add_definitions(-DDINO_MODE_DEBUG=1)
 
 add_library(dino-platform SHARED
         platform/standard.hpp
+        platform/filesystem.cpp     platform/filesystem.hpp
         platform/system_clock.cpp   platform/system_clock.hpp
         platform/logger.cpp         platform/logger.hpp)
 
