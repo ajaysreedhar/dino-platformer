@@ -79,7 +79,15 @@ void dino::Renderer::draw(dino::SpriteMaterial* material) {
 
 void dino::Renderer::commit() {
     SDL_RenderPresent(m_renderer);
-    SDL_Delay(4);
+
+    uint32_t frames_sec = 240;
+    uint32_t start_time = SDL_GetTicks();
+
+    if ((1000/frames_sec) > (SDL_GetTicks() - start_time)) {
+        SDL_Delay((1000/frames_sec) - (SDL_GetTicks() - start_time));
+    }
+
+    //SDL_Delay(4);
 }
 
 void dino::Renderer::blindScreen() {
