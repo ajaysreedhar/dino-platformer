@@ -17,7 +17,7 @@ Requirements:
 
 **Texture images**
 
-[Digital Moons Forest Background](https://digitalmoons.itch.io/parallax-forest-background)
+[Digital Moons](https://digitalmoons.itch.io/parallax-forest-background)
 
 [PNG Item](https://www.pngitem.com/middle/TxTwxwJ_dino-sprite-sheet-png-download-transparent-png/)
 
