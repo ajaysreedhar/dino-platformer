@@ -94,7 +94,12 @@ void dino::Renderer::blindScreen() {
     unsigned int color_code;
     double radians = 0.0f;
 
+#if defined (DINO_OS_TYPE_WINDOWS) && DINO_OS_TYPE_WINDOWS == 1
+    while (radians <= M_PI) {
+
+#elif defined (DINO_OS_TYPE_LINUX) && DINO_OS_TYPE_LINUX == 1 
     while (radians <= M_PIf) {
+#endif // DINO_OS_TYPE_WINDOWS or DINO_OS_TYPE_LINUX
         int result = SDL_RenderClear(m_renderer);
         DINO_ASSERT_SDL_RESULT(result)
 
