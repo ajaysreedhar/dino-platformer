@@ -1,5 +1,10 @@
 find_package(SDL2 REQUIRED)
 
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+    find_package(SDL2_image REQUIRED)
+    find_package(SDL2_mixer REQUIRED)
+endif ()
+
 set(BASEPATH "${CMAKE_SOURCE_DIR}/src")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/dist")
@@ -23,7 +28,7 @@ add_library(dino-engine SHARED
         engine/engine_context.cpp   engine/engine_context.hpp)
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
-    target_link_libraries(dino-engine PUBLIC SDL2::SDL2 dino-platform)
+    target_link_libraries(dino-engine PUBLIC SDL2::SDL2 SDL2::SDL2main SDL2_image::SDL2_image SDL2_mixer::SDL2_mixer dino-platform)
 else ()
     target_link_libraries(dino-engine PUBLIC -lGL -lSDL2 -lSDL2_image -lSDL2_mixer dino-platform)
 endif ()

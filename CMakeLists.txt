@@ -8,7 +8,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 project(Dino-Platformer)
 
-message("Compiling for: ${CMAKE_SYSTEM_NAME}")
-
 add_subdirectory(src)
 add_subdirectory(test)
