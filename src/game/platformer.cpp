@@ -314,7 +314,13 @@ void dino::Platformer::movePlayer(int pos_x, int pos_y) {
 
     float radians = 0;
 
+#if defined (DINO_OS_TYPE_WINDOWS) && DINO_OS_TYPE_WINDOWS == 1
+    while (radians <= M_PI) {
+
+#elif defined (DINO_OS_TYPE_LINUX) && DINO_OS_TYPE_LINUX == 1 
     while (radians <= M_PIf) {
+#endif // DINO_OS_TYPE_WINDOWS or DINO_OS_TYPE_LINUX
+
         int next_y = pos_y - static_cast<int>(450.0f * std::sin(radians));
         m_dinoSprite->setAttachment(pos_x, next_y);
         radians = radians + 0.01f;
