@@ -28,7 +28,13 @@
  */
 
 #include <vector>
+
+#if defined (DINO_OS_TYPE_WINDOWS) && DINO_OS_TYPE_WINDOWS == 1
+#include <SDL_image.h>
+#elif defined (DINO_OS_TYPE_LINUX) && DINO_OS_TYPE_LINUX == 1 
 #include <SDL2/SDL_image.h>
+#endif // DINO_OS_TYPE_WINDOWS or DINO_OS_TYPE_LINUX
+
 #include "assert.hpp"
 #include "sprite_material.hpp"
 
