@@ -29,7 +29,14 @@
 
 #pragma once
 
+#include "platform/standard.hpp"
+
+#if defined (DINO_OS_TYPE_WINDOWS) && DINO_OS_TYPE_WINDOWS == 1
+#include <SDL_error.h>
+#elif defined (DINO_OS_TYPE_LINUX) && DINO_OS_TYPE_LINUX == 1 
 #include <SDL2/SDL_error.h>
+#endif // DINO_OS_TYPE_WINDOWS or DINO_OS_TYPE_LINUX
+
 #include "except.hpp"
 
 #define DINO_ASSERT_SDL_HANDLE(handle, code)    \
