@@ -21,7 +21,13 @@ add_library(dino-engine SHARED
         engine/renderer.cpp         engine/renderer.hpp
         engine/audio_mixer.cpp      engine/audio_mixer.hpp
         engine/engine_context.cpp   engine/engine_context.hpp)
-target_link_libraries(dino-engine PUBLIC -lGL -lSDL2 -lSDL2_image -lSDL2_mixer dino-platform)
+
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+    target_link_libraries(dino-engine PUBLIC SDL2::SDL2 dino-platform)
+else ()
+    target_link_libraries(dino-engine PUBLIC -lGL -lSDL2 -lSDL2_image -lSDL2_mixer dino-platform)
+endif ()
+
 target_include_directories(dino-engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
 add_executable(dino-bin game/platformer.cpp game/platformer.hpp game/main.cpp)
