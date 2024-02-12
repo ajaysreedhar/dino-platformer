@@ -31,8 +31,16 @@
 
 #include <map>
 #include <string>
+
+#include "platform/standard.hpp"
+
+#if defined (DINO_OS_TYPE_WINDOWS) && DINO_OS_TYPE_WINDOWS == 1
+#include <SDL.h>
+#include <SDL_mixer.h>
+#elif defined (DINO_OS_TYPE_LINUX) && DINO_OS_TYPE_LINUX == 1 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
+#endif // DINO_OS_TYPE_WINDOWS or DINO_OS_TYPE_LINUX
 
 namespace dino {
 
