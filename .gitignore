@@ -1,6 +1,8 @@
 # IDEs and editors
 .idea/
 .vscode/
+.vs/
+*.vcxproj*
 
 # Compiled output directories
 dist/
@@ -10,8 +12,12 @@ out/
 CMakeFiles/
 cmake-build-debug/
 CMakeCache.txt
+cmake_install.cmake
+Debug/
 
 # Logs and backup files
 *.log
 *.old
 *.bak
+
+*.sln
