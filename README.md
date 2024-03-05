@@ -13,6 +13,19 @@ Requirements:
 - SDL2 with Image and Mixer libraries.
 - CMake v3.16 or higher
 
+#### On Linux
+
+```
+$ git clone https://github.com/ajaysreedhar/dino-platformer.git
+$ cd dino-platformer
+$ cmake .
+$ cmake --build .
+```
+
+Output files will be written to `dist` directory.
+
+Once build is completed successfully, copy `audio` and `texture` directory to the `dist` directory.
+
 ### :raised_hands: Resource Attributions
 
 **Texture images**
